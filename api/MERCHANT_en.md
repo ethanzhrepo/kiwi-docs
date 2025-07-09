@@ -6,7 +6,7 @@ This document helps merchants quickly integrate their business systems with the 
 
 ## API Authentication
 
-All requests to the Kiwi payment backend API require authentication. For detailed authentication and signature mechanisms, please refer to [Application API Overview (REST_API_en.md)](docs/REST_API_en.md#authentication-and-signature-mechanism). You'll need to obtain your merchant ID (`X-MCH-ID`) and merchant key (`secretKey`) from the Kiwi platform for API request signing.
+All requests to the Kiwi payment backend API require authentication. For detailed authentication and signature mechanisms, please refer to [Application API Overview (REST_API_en.md)](REST_API_en.md#authentication-and-signature-mechanism). You'll need to obtain your merchant ID (`X-MCH-ID`) and merchant key (`secretKey`) from the Kiwi platform for API request signing.
 
 ## One-Time Payment Integration Process
 
@@ -18,7 +18,7 @@ Your backend service first needs to call the Kiwi platform's "Create Order" inte
 
 **Interface Details:**
 - **Endpoint:** `POST /api/v1/payments`
-- **Documentation Reference:** [Create Order (REST_API_en.md)](docs/REST_API_en.md#4-create-order)
+- **Documentation Reference:** [Create Order (REST_API_en.md)](REST_API_en.md#4-create-order)
 
 **Key Request Parameters:**
 - `orderId`: The unique order number in your system.
@@ -106,7 +106,7 @@ Your backend service calls the Kiwi platform's "Create Subscription" interface.
 
 **Interface Details:**
 - **Endpoint:** `POST /api/v1/subscribe/create`
-- **Documentation Reference:** [Create Subscription (REST_API_en.md)](docs/REST_API_en.md#2-create-subscription)
+- **Documentation Reference:** [Create Subscription (REST_API_en.md)](REST_API_en.md#2-create-subscription)
 
 **Key Request Parameters:**
 - `orderId`: The unique order number in your system.
@@ -314,7 +314,7 @@ For merchants who want to more deeply customize the user experience, or don't wa
 
 5.  **Rely on Backend Notifications to Confirm Payment:**
     In this integration mode, **your system's order status updates completely depend on backend asynchronous notifications (Webhooks) sent by the Kiwi platform**. When the Kiwi platform detects that the corresponding address has received payment and confirms it, it will send notifications of successful payment or subscription status updates to your configured notification URL.
-    - Regarding receiving and processing notifications, please strictly follow the instructions in [Application API Overview (REST_API_en.md)](docs/REST_API_en.md#notification-mechanism), especially signature verification and idempotency handling.
+    - Regarding receiving and processing notifications, please strictly follow the instructions in [Application API Overview (REST_API_en.md)](REST_API_en.md#notification-mechanism), especially signature verification and idempotency handling.
 
 **Comparison with Redirecting to Kiwi UI Method:**
 

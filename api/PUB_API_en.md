@@ -60,11 +60,11 @@ All public API endpoints are prefixed with: `/pub/api/v1`
 - `CLOSED`: Order was manually closed
 - `REFUNDED`: Payment was refunded
 
-### 2. Query User Balance
+### 2. Query User Balance (Payment)
 
-**Endpoint:** `GET /pub/api/v1/user/balance`
+**Endpoint:** `GET /pub/api/v1/user/balance/payment/:id`
 
-**Description:** Check the user's available balance. Requires a valid JWT with userId.
+**Description:** Check the user's available balance for a specific payment. Requires a valid JWT with userId and paymentId.
 
 **JWT Requirements:**
 - The JWT must include `userId`
@@ -82,9 +82,31 @@ All public API endpoints are prefixed with: `/pub/api/v1`
 }
 ```
 
-### 3. Pay with Balance
+### 3. Query User Balance (Subscription)
 
-**Endpoint:** `POST /pub/api/v1/user/balance/pay/:id`
+**Endpoint:** `GET /pub/api/v1/user/balance/subscribe/:id`
+
+**Description:** Check the user's available balance for a specific subscription. Requires a valid JWT with userId and subscribeId.
+
+**JWT Requirements:**
+- The JWT must include `userId`
+- The JWT must include `subscribeId`
+
+**Response Example:**
+```json
+{
+  "code": 1,
+  "msg": "success",
+  "data": {
+    "balance": "152.50"
+  },
+  "systemTime": 1721889000000
+}
+```
+
+### 4. Pay with Balance
+
+**Endpoint:** `POST /pub/api/v1/user/balance/payment/:id`
 
 **Description:** Attempt to pay for an order using the user's available balance. Requires a valid JWT with paymentId and userId.
 
@@ -117,6 +139,29 @@ All public API endpoints are prefixed with: `/pub/api/v1`
   "data": {
     "required": "99.99",
     "available": "50.00"
+  },
+  "systemTime": 1721889000000
+}
+```
+
+### 5. Get User Address
+
+**Endpoint:** `GET /pub/api/v1/user/address/:id`
+
+**Description:** Get the user's deposit address for a specific payment or subscription. Requires a valid JWT with userId and paymentId or subscribeId.
+
+**JWT Requirements:**
+- The JWT must include `userId`
+- The JWT must include `paymentId` or `subscribeId` matching the `:id` in the URL path
+
+**Response Example:**
+```json
+{
+  "code": 1,
+  "msg": "success",
+  "data": {
+    "type": "EVM",
+    "address": "0x71C7656EC7ab88b098defB751B7401B5f6d8976F"
   },
   "systemTime": 1721889000000
 }
@@ -253,24 +298,22 @@ All public API endpoints are prefixed with: `/pub/api/v1`
 }
 ```
 
-## Wallet Connection
+### 5. Query Subscription Bills
 
-### 1. Connect Wallet
+**Endpoint:** `POST /pub/api/v1/user/subscribe/bills/:id`
 
-**Endpoint:** `POST /pub/api/v1/user/wallet/connect`
-
-**Description:** Register a user's wallet address with their account. Requires a valid JWT with userId.
+**Description:** Get the billing history for a specific subscription. Requires a valid JWT with subscribeId.
 
 **JWT Requirements:**
-- The JWT must include `userId`
+- The JWT must include `subscribeId` matching the `:id` in the URL path
+- The JWT must include `userId` that matches the subscription's user ID
 
 **Request Body:**
 ```json
 {
-  "address": "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
-  "chain": "ETH",
-  "message": "I am connecting my wallet to Kiwi Payment Service",
-  "signature": "0x..."
+  "status": "PAID",
+  "page": 1,
+  "size": 10
 }
 ```
 
@@ -280,19 +323,33 @@ All public API endpoints are prefixed with: `/pub/api/v1`
   "code": 1,
   "msg": "success",
   "data": {
-    "address": "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
-    "chain": "ETH",
-    "connected_at": "2024-07-25T12:00:00Z"
+    "bills": [
+      {
+        "id": "B123456789012345678",
+        "subscribe_id": "S202407251100001234567890",
+        "fee": "19.99",
+        "status": "PAID",
+        "billing_period": 1,
+        "created_at": "2024-07-25T11:00:00Z",
+        "due_date": "2024-08-25T11:00:00Z",
+        "processed_at": "2024-07-25T11:30:00Z"
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "size": 10,
+      "total": 5
+    }
   },
   "systemTime": 1721889000000
 }
 ```
 
-### 2. Query Connected Wallets
+### 6. Get Pending Deposits
 
-**Endpoint:** `GET /pub/api/v1/user/wallet/list`
+**Endpoint:** `GET /pub/api/v1/user/deposits/pending`
 
-**Description:** List all wallets connected to a user's account. Requires a valid JWT with userId.
+**Description:** Get the user's pending deposit transactions. Requires a valid JWT with userId.
 
 **JWT Requirements:**
 - The JWT must include `userId`
@@ -303,16 +360,15 @@ All public API endpoints are prefixed with: `/pub/api/v1`
   "code": 1,
   "msg": "success",
   "data": {
-    "wallets": [
+    "deposits": [
       {
-        "address": "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
-        "chain": "ETH",
-        "connected_at": "2024-07-25T12:00:00Z"
-      },
-      {
-        "address": "0x8A0b1CF82AcA3C98CdD79b25F6D6a2E18AfD0f5E",
-        "chain": "BSC",
-        "connected_at": "2024-07-25T14:30:00Z"
+        "id": "T123456789012345678",
+        "payment_or_subscribe_id": "P202407251030001234567890",
+        "amount": "99.99",
+        "confirmed_blocks": 5,
+        "required_confirmations": 12,
+        "tx_hash": "0x1234567890abcdef...",
+        "created_at": "2024-07-25T12:00:00Z"
       }
     ]
   },
@@ -324,7 +380,7 @@ All public API endpoints are prefixed with: `/pub/api/v1`
 
 ### 1. Get Supported Chains
 
-**Endpoint:** `GET /pub/api/v1/system/chains`
+**Endpoint:** `GET /pub/api/v1/chains`
 
 **Description:** Retrieve a list of blockchain networks supported by the Kiwi payment system. No authentication required.
 
@@ -359,6 +415,82 @@ All public API endpoints are prefixed with: `/pub/api/v1`
 }
 ```
 
+### 2. Get Subscription Contract Address
+
+**Endpoint:** `GET /pub/api/v1/subscribe/contract`
+
+**Description:** Get the smart contract address used for subscription payments. No authentication required.
+
+**Response Example:**
+```json
+{
+  "code": 1,
+  "msg": "success",
+  "data": {
+    "contract_address": "0x742d35Cc6634C0532925a3b8D9a77e8B58319f06"
+  },
+  "systemTime": 1721889000000
+}
+```
+
+### 3. Report Transaction
+
+**Endpoint:** `POST /pub/api/v1/report`
+
+**Description:** Report a transaction hash for processing. No authentication required.
+
+**Request Body:**
+```json
+{
+  "txHash": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+  "chainId": 1
+}
+```
+
+**Response Example:**
+```json
+{
+  "code": 1,
+  "msg": "success",
+  "data": {
+    "message": "Transaction processed successfully",
+    "txHash": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+    "status": "processed"
+  },
+  "systemTime": 1721889000000
+}
+```
+
+### 4. Report Transaction (Authenticated)
+
+**Endpoint:** `POST /pub/api/v1/user/report`
+
+**Description:** Report a transaction hash for processing. Requires JWT authentication.
+
+**JWT Requirements:**
+- The JWT must include `userId`
+
+**Request Body:**
+```json
+{
+  "txHash": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+  "chainId": 1
+}
+```
+
+**Response Example:**
+```json
+{
+  "code": 1,
+  "msg": "success",
+  "data": {
+    "message": "Transaction processed successfully",
+    "txHash": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+    "status": "processed"
+  },
+  "systemTime": 1721889000000
+}
+```
 
 ## Error Codes
 
@@ -418,4 +550,4 @@ All public API endpoints are prefixed with: `/pub/api/v1`
 
 5. **Mobile Applications**: These endpoints are also suitable for mobile applications, though additional security considerations may apply.
 
-For detailed information about merchant integration, please refer to the [Merchant Integration Guide (MERCHANT_en.md)](docs/MERCHANT_en.md). 
+For detailed information about merchant integration, please refer to the [Merchant Integration Guide (MERCHANT_en.md)](MERCHANT_en.md). 

@@ -848,4 +848,4 @@ Current API version: v1
 - 2023-08-15: Added subscription management endpoints
 - 2023-09-30: Added user balance query endpoint
 
-For detailed information about the Public API for frontend applications, please refer to [Public API Documentation (PUB_API_en.md)](docs/PUB_API_en.md). 
+For detailed information about the Public API for frontend applications, please refer to [Public API Documentation (PUB_API_en.md)](PUB_API_en.md). 

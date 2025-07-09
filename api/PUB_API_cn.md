@@ -99,7 +99,27 @@
 }
 ```
 
-### 2. 报告交易
+### 2. 获取订阅合约地址
+
+接口: GET /pub/api/v1/subscribe/contract
+
+描述: 获取订阅支付使用的智能合约地址
+
+参数: 无
+
+返回示例:
+```json
+{
+  "code": 1,
+  "msg": "success",
+  "data": {
+    "contract_address": "0x742d35Cc6634C0532925a3b8D9a77e8B58319f06"
+  },
+  "systemTime": 1678234567890
+}
+```
+
+### 3. 报告交易
 
 以下是无需认证的公共接口：
 

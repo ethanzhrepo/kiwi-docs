@@ -774,3 +774,120 @@ Content-Type: application/json
 - 必须提供有效的订阅账单ID
 - 订阅账单必须属于当前商户
 
+返回值:
+- 成功: 订阅账单详情，包括状态、费用、账单日期等
+- 失败: 错误信息及原因，常见错误：
+  - 账单不存在
+  - 账单不属于当前商户
+
+返回示例:
+
+```json
+{
+  "code": 1,
+  "msg": "success",
+  "data": {
+    "id": "B202405051234567891",
+    "subscribe_id": "S202405051234567890",
+    "mch_id": "merchant123",
+    "user_id": "user456",
+    "fee": "100.00",
+    "status": "PENDING",
+    "created_at": "2024-05-05T12:00:00Z",
+    "bill_date": "2024-05-05T12:00:00Z",
+    "due_date": "2024-05-31T23:59:59Z",
+    "billing_period": 3,
+    "processed_at": null,
+    "chain_id": null,
+    "tx_hash": null
+  },
+  "systemTime": 1714899600000
+}
+```
+
+### 10. 根据订阅ID和期数获取订阅账单详情
+
+接口: GET /api/v1/subscribe/bill/getByOrderIDAndPeriod
+
+描述: 根据商户订单ID和账单期数获取账单详情
+
+参数:
+- orderId: 商户订单ID (查询参数) - 必选
+- period: 账单期数 (查询参数) - 必选
+
+验证要求:
+- 必须提供有效的订单ID和期数
+- 订阅必须属于当前商户
+
+返回值:
+- 成功: 订阅账单详情
+- 失败: 错误信息及原因，常见错误：
+  - 订阅不存在
+  - 指定期数的账单不存在
+  - 订阅不属于当前商户
+
+返回示例:
+
+```json
+{
+  "code": 1,
+  "msg": "success",
+  "data": {
+    "id": "B202405051234567891",
+    "subscribe_id": "S202405051234567890",
+    "mch_id": "merchant123",
+    "user_id": "user456",
+    "fee": "100.00",
+    "status": "PAID",
+    "created_at": "2024-05-05T12:00:00Z",
+    "bill_date": "2024-05-05T12:00:00Z",
+    "due_date": "2024-05-31T23:59:59Z",
+    "billing_period": 1,
+    "processed_at": "2024-05-10T14:30:00Z",
+    "chain_id": 1,
+    "tx_hash": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+  },
+  "systemTime": 1714899600000
+}
+```
+
+### 11. 取消订阅
+
+接口: POST /api/v1/subscribe/cancel
+
+描述: 取消一个活跃的订阅
+
+请求体:
+```json
+{
+  "subscribeId": "订阅ID - 必选"
+}
+```
+
+验证要求:
+- 必须提供有效的订阅ID
+- 订阅必须属于当前商户
+- 订阅状态必须允许取消
+
+返回值:
+- 成功: 取消成功确认
+- 失败: 错误信息及原因，常见错误：
+  - 订阅不存在
+  - 订阅状态不允许取消
+  - 订阅不属于当前商户
+
+返回示例:
+
+```json
+{
+  "code": 1,
+  "msg": "success",
+  "data": {
+    "message": "Subscription cancelled successfully",
+    "subscribe_id": "S202405051234567890",
+    "status": "CANCELED"
+  },
+  "systemTime": 1714899600000
+}
+```
+

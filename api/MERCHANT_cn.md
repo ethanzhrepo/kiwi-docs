@@ -6,7 +6,7 @@
 
 ## API认证
 
-所有向Kiwi支付后端API发起的请求，都需要进行身份认证。详细的认证与签名机制，请参考 [应用API 接口概述 (REST_API_cn.md)](docs/REST_API_cn.md#认证与签名机制)。您需要从Kiwi平台获取您的商户ID (`X-MCH-ID`) 和商户密钥 (`secretKey`) 用于API请求签名。
+所有向Kiwi支付后端API发起的请求，都需要进行身份认证。详细的认证与签名机制，请参考 [应用API 接口概述 (REST_API_cn.md)](REST_API_cn.md#认证与签名机制)。您需要从Kiwi平台获取您的商户ID (`X-MCH-ID`) 和商户密钥 (`secretKey`) 用于API请求签名。
 
 ## 一次性支付接入流程
 
@@ -18,7 +18,7 @@
 
 **接口详情:**
 - **Endpoint:** `POST /api/v1/payments`
-- **文档参考:** [创建订单 (REST_API_cn.md)](docs/REST_API_cn.md#4-创建订单)
+- **文档参考:** [创建订单 (REST_API_cn.md)](REST_API_cn.md#4-创建订单)
 
 **关键请求参数:**
 - `orderId`: 您系统中的唯一订单号。
@@ -106,7 +106,7 @@ Kiwi支付UI页面会解析此JWT，验证用户身份，并展示相应的支�
 
 **接口详情:**
 - **Endpoint:** `POST /api/v1/subscribe/create`
-- **文档参考:** [创建订阅 (REST_API_cn.md)](docs/REST_API_cn.md#2-创建订阅)
+- **文档参考:** [创建订阅 (REST_API_cn.md)](REST_API_cn.md#2-创建订阅)
 
 **关键请求参数:**
 - `orderId`: 您系统中的唯一订单号。
@@ -314,7 +314,7 @@ encoded_jwt = jwt.encode(payload, secret_key, algorithm="HS256")
 
 5.  **依赖后端通知确认支付:**
     在此集成模式下，**您系统的订单状态更新完全依赖于Kiwi平台发送的后端异步通知** (Webhook)。当Kiwi平台监测到对应地址收到款项并确认后，会向您配置的通知URL发送支付成功或订阅状态更新的通知。
-    - 关于通知的接收和处理，请严格遵循 [应用API 接口概述 (REST_API_cn.md)](docs/REST_API_cn.md#通知机制) 中的说明，特别是签名验证和幂等性处理。
+    - 关于通知的接收和处理，请严格遵循 [应用API 接口概述 (REST_API_cn.md)](REST_API_cn.md#通知机制) 中的说明，特别是签名验证和幂等性处理。
 
 **与跳转Kiwi UI方式的对比:**
 
