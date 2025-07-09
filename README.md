@@ -1,6 +1,6 @@
 # Kiwi Payment Platform Documentation
 
-[中文版](./README_cn.md) | English
+English | [中文版](./README_cn.md)
 
 Welcome to Kiwi Payment Platform! This documentation repository contains comprehensive integration guides, API documentation, and tool usage instructions.
 
@@ -8,23 +8,23 @@ Welcome to Kiwi Payment Platform! This documentation repository contains compreh
 
 ### 📚 API Documentation
 
-#### Chinese Documentation (中文文档)
-- [商户接入指南](./api/MERCHANT_cn.md) - Merchant integration guide
-- [REST API 文档](./api/REST_API_cn.md) - REST API interface documentation
-- [公共 API 文档](./api/PUB_API_cn.md) - Public API usage instructions
-
 #### English Documentation
 - [Merchant Integration Guide](./api/MERCHANT_en.md) - Quick integration guide for merchants
 - [REST API Documentation](./api/REST_API_en.md) - Detailed REST API interface documentation
 - [Public API Documentation](./api/PUB_API_en.md) - Public interface usage instructions
 
-### 🛠️ Tools Documentation
-
 #### Chinese Documentation (中文文档)
-- [CLI 使用指南](./cli/CLI_cn.md) - Kiwi CLI tool usage guide
+- [商户接入指南](./api/MERCHANT_cn.md) - Merchant integration guide
+- [REST API 文档](./api/REST_API_cn.md) - REST API interface documentation
+- [公共 API 文档](./api/PUB_API_cn.md) - Public API usage instructions
+
+### 🛠️ Tools Documentation
 
 #### English Documentation
 - [CLI Usage Guide](./cli/CLI_en.md) - Kiwi CLI tool usage instructions
+
+#### Chinese Documentation (中文文档)
+- [CLI 使用指南](./cli/CLI_cn.md) - Kiwi CLI tool usage guide
 
 ## Project Introduction
 
